@@ -17,6 +17,15 @@
             "Psr\\SimpleCache\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Psr\\SimpleCache\\Tests\\Fixtures\\": "tests/Fixtures/",
+            "Psr\\SimpleCache\\Tests\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "9.6.38"
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "3.0.x-dev"
