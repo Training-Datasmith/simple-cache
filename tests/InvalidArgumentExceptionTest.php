@@ -20,15 +20,23 @@ final class InvalidArgumentExceptionTest extends TestCase
 
     public function testExtendsOnlyCacheException(): void
     {
-        $reflection = new ReflectionClass(InvalidArgumentException::class);
-        $fileName = $reflection->getFileName();
-        $this->assertIsString($fileName);
-        $source = file_get_contents($fileName);
-        $this->assertIsString($source);
-        $this->assertMatchesRegularExpression(
-            '/interface\s+InvalidArgumentException\s+extends\s+\\\\?CacheException\b/',
-            $source
+        $this->assertSame(
+            ['Psr\SimpleCache\CacheException'],
+            $this->directParentInterfaces(InvalidArgumentException::class, CacheException::class)
         );
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function directParentInterfaces(string $child, string $parent): array
+    {
+        $childNames = (new ReflectionClass($child))->getInterfaceNames();
+        $parentNames = (new ReflectionClass($parent))->getInterfaceNames();
+        $direct = array_values(array_diff($childNames, $parentNames));
+        sort($direct);
+
+        return $direct;
     }
 
     public function testIsThrowableThroughCacheException(): void

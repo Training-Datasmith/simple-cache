@@ -18,15 +18,23 @@ final class CacheExceptionTest extends TestCase
 
     public function testExtendsOnlyThrowable(): void
     {
-        $reflection = new ReflectionClass(CacheException::class);
-        $fileName = $reflection->getFileName();
-        $this->assertIsString($fileName);
-        $source = file_get_contents($fileName);
-        $this->assertIsString($source);
-        $this->assertMatchesRegularExpression(
-            '/interface\s+CacheException\s+extends\s+\\\\?Throwable\b/',
-            $source
+        $this->assertSame(
+            ['Throwable'],
+            $this->directParentInterfaces(CacheException::class, \Throwable::class)
         );
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function directParentInterfaces(string $child, string $parent): array
+    {
+        $childNames = (new ReflectionClass($child))->getInterfaceNames();
+        $parentNames = (new ReflectionClass($parent))->getInterfaceNames();
+        $direct = array_values(array_diff($childNames, $parentNames));
+        sort($direct);
+
+        return $direct;
     }
 
     public function testDeclaresNoOwnMethodsOrConstants(): void

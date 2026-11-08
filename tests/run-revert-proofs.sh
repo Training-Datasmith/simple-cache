@@ -130,6 +130,10 @@ run_mutation_proof remove-throwable-extends \
   'testExtendsOnlyThrowable' \
   "perl -0pi -e 's/interface CacheException extends \\\\Throwable/interface CacheException/' src/CacheException.php"
 
+run_mutation_proof add-extra-parent-interface \
+  'testExtendsOnlyThrowable' \
+  "perl -0pi -e 's/interface CacheException extends \\\\Throwable\\n\\{/interface Marker {}\\n\\ninterface CacheException extends \\\\Throwable, Marker\\n\\{/' src/CacheException.php"
+
 run_mutation_proof remove-invalid-extends-cache-exception \
   'testExtendsOnlyCacheException' \
   "perl -0pi -e 's/interface InvalidArgumentException extends CacheException/interface InvalidArgumentException/' src/InvalidArgumentException.php"
