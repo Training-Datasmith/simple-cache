@@ -158,4 +158,10 @@ if ! diff -q "$GIT_STATUS_BEFORE" "$GIT_STATUS_AFTER" >/dev/null 2>&1; then
 fi
 rm -f "$GIT_STATUS_AFTER"
 
+mkdir -p /opt/cursor/artifacts
+{
+  echo "default_order_summary=$(grep '^OK' "$HOST_WORKDIR/phpunit-default-order.stdout" || true)"
+  echo "random_order_summary=$(grep '^OK' "$HOST_WORKDIR/phpunit-random-order-20261108.stdout" || true)"
+} > /opt/cursor/artifacts/.run-tests-ok-lines.txt
+
 echo "All test runs passed."
